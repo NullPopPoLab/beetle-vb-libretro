@@ -2435,17 +2435,17 @@ bool retro_load_game(const struct retro_game_info *info)
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_UP, "Left D-Pad Up" },
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_DOWN, "Left D-Pad Down" },
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_RIGHT, "Left D-Pad Right" },
-      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_B, "B" },
-      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_A, "A" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_Z, "B" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_C, "A" },
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_L, "L" },
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_R, "R" },
-      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_R2, "Right D-Pad Left" },
-      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_L2, "Right D-Pad Up" },
-      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_L3, "Right D-Pad Down" },
-      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_R3, "Right D-Pad Right" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_Y, "Right D-Pad Left" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_X, "Right D-Pad Up" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_B, "Right D-Pad Down" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_A, "Right D-Pad Right" },
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_SELECT, "Select" },
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_START, "Start" },
-      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_X, "Low-Battery Toggle" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_MENU, "Low-Battery Toggle" },
 
       { 0, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_RIGHT, RETRO_DEVICE_ID_ANALOG_X, "Right D-Pad X" },
       { 0, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_RIGHT, RETRO_DEVICE_ID_ANALOG_Y, "Right D-Pad Y" },
@@ -2533,20 +2533,20 @@ static void update_input(void)
    input_buf[0] = 0;
 
    static unsigned map[] = {
-      RETRO_DEVICE_ID_JOYPAD_A,
-      RETRO_DEVICE_ID_JOYPAD_B,
+      RETRO_DEVICE_ID_JOYPAD_C, // A
+      RETRO_DEVICE_ID_JOYPAD_Z, // B 
       RETRO_DEVICE_ID_JOYPAD_R,
       RETRO_DEVICE_ID_JOYPAD_L,
-      RETRO_DEVICE_ID_JOYPAD_L2, //right d-pad UP
-      RETRO_DEVICE_ID_JOYPAD_R3, //right d-pad RIGHT
+      RETRO_DEVICE_ID_JOYPAD_X, //right d-pad UP
+      RETRO_DEVICE_ID_JOYPAD_A, //right d-pad RIGHT
       RETRO_DEVICE_ID_JOYPAD_RIGHT, //left d-pad
       RETRO_DEVICE_ID_JOYPAD_LEFT, //left d-pad
       RETRO_DEVICE_ID_JOYPAD_DOWN, //left d-pad
       RETRO_DEVICE_ID_JOYPAD_UP, //left d-pad
       RETRO_DEVICE_ID_JOYPAD_START,
       RETRO_DEVICE_ID_JOYPAD_SELECT,
-      RETRO_DEVICE_ID_JOYPAD_R2, //right d-pad LEFT
-      RETRO_DEVICE_ID_JOYPAD_L3, //right d-pad DOWN
+      RETRO_DEVICE_ID_JOYPAD_Y, //right d-pad LEFT
+      RETRO_DEVICE_ID_JOYPAD_B, //right d-pad DOWN
    };
 
    for (j = 0; j < MAX_PLAYERS; j++)
@@ -2555,7 +2555,7 @@ static void update_input(void)
          joy_bits[j] = input_state_cb(j, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_MASK);
       else
       {
-         for (i = 0; i < (RETRO_DEVICE_ID_JOYPAD_R3+1); i++)
+         for (i = 0; i < (RETRO_DEVICE_ID_JOYPAD_MENU+1); i++)
             joy_bits[j] |= input_state_cb(j, RETRO_DEVICE_JOYPAD, 0, i) ? (1 << i) : 0;
       }
    }
@@ -2589,7 +2589,7 @@ static void update_input(void)
    /* For low-battery mode switch */
    {
       static int pressed;
-      if (joy_bits[0] & (1 << RETRO_DEVICE_ID_JOYPAD_X))
+      if (joy_bits[0] & (1 << RETRO_DEVICE_ID_JOYPAD_MENU))
       {
          if (!pressed)
          {
